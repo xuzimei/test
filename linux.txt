@@ -1,0 +1,765 @@
+//man.linuxde.net/
+poweroff 关机指令
+reboot 重启指令
+------------------------------------------------------时间
+cal 显示 日历  白色背景表示当天
+timedatectl set-timezone Asia/Shanghai 更改时区 后面用上海
+date 显示当前时间
+date +"%Y-%m-%d %H:%M:%S"  （将时间格式化）
+#!/bin/bash
+FILE_NAME=`date +%Y%m%d_%H%M%s`.log（根据+后面的格式打印时间）字符串直接后面写.log就加上了
+echo $FILE_NAME
+
+
+vi 文件名 （文本编辑）
+
+默认为  命令模式
+
+编辑模式  i 进入编辑模式
+
+Esc 退出编辑模式 进入命令模式
+Shift + : wq   保存退出   
+Shift + : q！  不保存退出
+
+python 文件名 进入该文件
+
+IDE 集成开发环境
+
+ip addr 查询虚拟网卡 ens33下 inet /24之前是IP地址
+
+yum(命令) -y（yes参数）install（安装参数）gcc（软件） 安装c
+yum install gcc-c++  安装g++
+
+python 编译.py文件
+g++  编译.cpp文件
+gcc test.c  编译test.c文件
+./a.out  执行文件   a.out 是linux/unix环境下gcc编译源代码(c/c++)并连接产生的默认执行文件名。
+./a.out表示当前目录下的a.out文件
+
+~表示当前用户主目录=/root
+pwd 查看当前目录的位置
+linux 下文件分隔/ windows \
+cd ~或cd  快速返回到根目录
+----------------------------------------------查看文件信息
+ls 显示当前目录下所有文件 
+ls -l 显示当前目录下所有文件 以列表的方式显示
+ls -a 显示所有文件 不论是隐藏还是不隐藏  都会显示出来
+.（小点）打头的文件 表示该文件为隐藏文件
+ls -la 和ls -l -a 效果一样  -l -s 顺序随便
+
+ls -l / 查看（/root）层级目录
+
+
+ls A 查看A目录下的 文件
+
+cd A   进入A文件夹
+----------------------------------------------查看文件内容
+cat 11.c 查看11.c 文件内容
+head -3 11.c 查看11.c 文件内容的前三行
+tail -3 11.c 查看11.c 文件内容的后三行
+more ab.txt  翻页功能 q退出
+less ab.txt  翻页功能 q退出
+
+----------------------------------------------文件复制、修改名、剪切 
+
+cp test.c 11.c 复制一个test.c文件，新文件名为11.c（文件名顺序严格）
+mv 11.c 22.c   把11.c文件名 改为22.c（文件名顺序严格）
+mv 22.c A/ 把22.c  移入A文件夹（给A后面加/ 防止A不是文件夹 被改名，没找到会报错）
+---------------------------------------------新建文件
+
+mkdir  A（文件夹名）  新建文件夹
+touch 1.txt 在当前目录下创建名为1.txt的新空文件
+touch 2201-{1..100}.txt 创建名为2201-1到100.txt  100个文件
+---------------------------------------------删除文件
+
+rm -rf 2201-*.txt 删除这些文件 -rf f表示确认 *可替代某些文件名 不同的部分
+rm -rf 2201-[5-8].txt 删除5到8区间的文件
+rm -rf 2201-[5-8]*.txt
+rm 1.txt 删除当前目录下1.txt 文件
+rm -r B 用递归的方式删除 B文件夹
+（rm B 这样不能删除B文件夹必须加 -r）
+
+
+---------------------------------------------修改文件权限
+.当前目录 ..表示上一级目录   cd ..返回上一级目录
+
+查看相对路径内容 cat ../1.txt（从当前目录返回到上一级查看上一级目录下的1.txt内容）
+
+drwxr-xr-x.        2                    root          root             104      Nov 27 11:12 A  
+-rw-r--r--.        1                    root          root             22       Nov 27 11:22 ab.txt   -表示文件
+-rw-------.        1                    root          root             1218     Nov 26 09:51 anaconda-ks.cfg
+-rwxr-xr-x.        1                    root          root             8568     Nov 26 11:44 a.out
+-rw-r--r--.        1                    root          root             211      Nov 26 11:43 test.c
+-rw-r--r--.        1                    root          root             19       Nov 26 10:50 test.py
+文件类型与权限	链接占用的节点(i-node) 文件拥有者 文件所有者的群组 文件大小 文件创建时间 最近修改时间 文件名称
+       
+d表示文件夹 _表示文件
+
+首字母  d表示文件夹 -表示文件 l表示链接
+
+  4           2        1
+r读取权限 w写入权限 x执行权限
+ ---       ---       ---
+拥有者     群组    其他用户   首字母后 三个分一组，-表示没有
+u（user） g(group)   o(other)
+chmod u+x ab.txt  表示给拥有者加上执行权限
+chmod g-r ab.txt  表示给群组减去上读取权限
+chmod o=rw ab.txt 表示给其它用户加上读取权限、写入权限  之前如果有x权限现在就重新成为rw
+chmod 777 ab.txt  表示给 拥有者、群组、其他用户 分别增加 r、w、x权限可以自由相加
+以上三个都可以使用  方法一样 可以一次增加和减少多个权限
+给root增加权限   chmod 777 /root
+chmod u+rw *.txt  批量处理txt文件
+-----------------------------------------------------------添加新用户
+useradd test01 添加一个用户  
+passwd  test01 修改密码
+[root@localhost ~]#     #表示超级管理员  根目录/root
+
+[test01@localhost ~]$   $普通用户        根目录/home/test01
+-----------------------------------------------------------修改文件拥有者、群组
+-rw-r--r--. 1  root  root   19 Nov 26 10:50 test.py
+修改文件的拥有者，将root下的test.py 改到test01普通用户（上面第三列）
+文件层级关系           /     
+                       |__root
+                       |__home
+                           |__test01
+                           |__test02
+
+chown test01 test.py  修改文件的拥有者
+chgrp test01 test.py  修改文件的群组
+------------------------------------------------------------
+uesradd  添加用户
+    del  删除用户
+    mod  修改用户
+groupadd 添加群组
+     del 删除群组
+     mod 修改用户
+
+vi test.sh   脚本的后缀是.sh
+./test.sh    执行文件test.sh   加./是因为没有配环境变量
+echo 相当于python 中 print
+echo $PATH 打印环境变量路径
+vi .bash_profile 进入环境变量 
+shift+：set nu  加行号
+source .bash_profile 让重新编辑的环境变量生效
+
+时间脚本 shell脚本
+#!/bin/bash
+date
+
+echo $HOME 打印当前用户主目录
+echo $PWD  打印当前目录
+echo $RANDOM 打印一个随机数（重要）（0-32767）
+
+-gt>
+-lt<
+-ge>=
+-le<=
+-ne!=
+-eq==
+-a  表示与
+-o  表示或
+#!/bin/bash
+R=$RANDOM            -----R变量一般用大写 给变量赋一个随机值
+while [ 1 ]          -----while和[ 1 ]之间都要有空格
+do
+  echo -n 请输入一个数字       -n表示不换行
+  read INPUT                   输入一个数
+  if [ $INPUT -gt $R ]  ----之间必须加空格 -gt表示大于 使用变量前要加$  > <表示重定向
+  then
+      echo 输的值大了
+  elif [ $INPUT -lt $R ]---使用变量加$
+  then
+      echo 输的值小了
+  else
+      echo 猜中了
+      break
+  fi             ---if结尾用fi
+done             ---do结尾用done
+
+ls |grep test.c   |管道符（把要查的传进去输出来）grep过滤   
+输出要查找的文件
+ls |grep -v test.c
+输出查找不含test.c的其它文件
+awk -F/ '{print $1}'    （awk  是切）
+    -F指定分隔符为/  （F必须大写）
+
+ip adder |grep inet          用管道查询带 inet的所有行 
+ip addr |grep "scope global" 用管道查询带 scope global的所有行  
+  
+ip addr |grep "scope global"|awk '{print $2}'  在管道之后加管道 awk默认空格拆分 输出切的第二个
+NF 表示字段数，在执行过程中对应于当前的字段数。
+NR 表示记录数，在执行过程中对应于当前的行号。
+id addr -F 'NR>1{ }'  表示处理行号大于1的行
+
+grep echo *.sh  查询并过滤包含.sh类型文件下 包含echo语句的全部行
+grep -l echo *.sh 查询并过滤 .sh类型的文件 中包含echo语句 的所有文件名
+----------------------------------------------------------------任务管理器 
+ping www.baidu.com  查看有没有连上网  无限次  按Ctrl + c退出
+ping -c 4  www.baidu.com 查看有没有连上网  屏4次退出
+top  进入任务管理器查看进程（动态）
+ps -ef 任务管理器进程（静态）利于自动化操作
+
+kill `ps -ef |grep ssh|grep -v grep|awk '{print $2}' |xargs `
+(kill结束进程必须加空格) (``)表示将执行结果给kill执行  xargs将列显示转为行显示
+A = `date` 表示将date执行的结果给A变量  
+
+-----------------------------------------------文件传输
+
+wget "文件链接" -O 11.jpg      在一个网络连接下  下载东西 指定文件名和格式为 11.jpg
+-O（大写）指定文件格式
+
+HTTP协议 默认端口号是80
+例如www.baidu.com:90
+能用ip地址的地方可以用域名
+（重要）
+scp root@192.168.3.47:/root/11.jpeg ./这块可以新起文件名 
+scp 对方用户名@远程ip地址:文件路径 ./（表示下载的路径）
+
+scp ./11.jpeg root@192.168.3.47:/root/temp/liangxu.jpeg
+scp 本地文件路径  远程用户名@远程ip地址：文件路径/（更改的文件名 可选）
+
+read A
+read B
+expr $A + $B(输出A+B的值)
+
+yum -y install ftp（交互文件的软件）
+ftp 对方ip地址  进入该软件
+get 文件名（下载）
+put 文件名（上传）
+ls 产看远程文件列表
+
+创建一个ftp.txt文件 里面编辑
+open 192.168.3.20    和服务器建立连接
+user ftp ftp         身份认证
+bin                  设置传输模式（二进制传输）
+cd 2201              进入2201
+put 2.jpg liangxu.jpg  （get 下载命令）
+exit
+
+ftp -ivn <ftp.txt  自动化执行上传命令
+         
+<ftp.txt 输入重定向
+#!/bin/bash(嵌入式文档)
+./a.out <<AA (<<表示嵌入式文档)（AA可以是任意字符不能是#（表示注释））
+10 30
+AA   注意：后面不能有任何字符
+
+for line in `cat data.txt`
+do
+   echo $line|awk -F, '{printf("%d %d\n", $1,$2);}' |./a.out
+done
+---------------------------------------------------------输出重定向
+echo $"hello woeld" >12.txt  (输出重定向)将hello woeld不打印到屏幕上 打印到文本12.txt里面 
+>(表示w 没有文件 新建 有了清空重写)
+>>（表示a 没有文件新建 有了追加）
+#!/bin/bash
+FILE_NAME=`date +%Y%m%d_%H%M%S`.log （根据+后面的格式打印时间）字符串直接后面写.log就加上了
+echo $FILE_NAME
+touch $FILE_NAME    （创建一个文件名为打印出来的那个系统时间）
+cal >$FILE_NAME      （）
+ping -c 4 www.baidu.com >>$FILE_NAME
+ls -l >>$FILE_NAME
+
+输出重定向 记录错误信息  2>1.txt   
+           错误和正确都记录 &>1.txt
+
+df -k  查看目录的内存使用率
+du 加目录名     显示当前目录下所有文件夹所使用的数据块（数据块可理解为杯子 装满了装下一个）
+/etc 包含系统配置文件和用户 用户组配置文件
+
+
+`date -d "x days ago" +%Y%m%d`(表示x天前的日期， x周用weeks依次类推， x天后用-x)
+
+----------------------------压缩
+tar.gz  压缩包
+tar -zcvf 1.tar.gz 2.jpg   压缩2.jpg文件 压缩后压缩包名1.tar.gz
+tar -zxvf ../1.tar.gz      解压1.tar.gz 到当前文件件     这是从文件夹temp里面发起的
+                 
+                 cdrom光驱
+mount -t auto /dev/cdrom /mnt/2201
+挂载 -t文件系统类型 auto自动 /dev/cdrom设备 /mnt/2201目录 将设备和这个目录关联起来
+
+find 查找文件 （按文件名，按文件类型 按文件大小 按时间）
+按文件名find ./ -name     ftp*
+            路径 按文件名  文件名一部分+*
+按类型find ./ -type  
+普通文件f 目录d 列表l
+按大小find ./ -type  +15k
++大于 -小于
+按大小find ./ -atime  7  //-atime （a位置可发生变化）-a表示访问时间  -m修改内容时间 -c修改权限时间
+刚好7天前访问过 -7七天内 +7七天前
+time（表示天） min（表示分钟）
+
+A="ni hao"  echo $A
+ni hao
+
+B='$A haha'
+echo $B
+$A haha
+
+B="$A haha"   双引号和单引号区别
+echo $B
+ni hao haha
+
+read A
+nihao（输入）
+echo $A
+
+乘法口诀脚本
+#!/bin/bash
+for ((i=1;i<10;i++))
+do
+  for ((j=1;j<=i;j++))
+  do
+    echo -n "$i*$j=`expr $i \* $j` "   -n表示不换行
+  done
+  echo                                 为了换行
+done
+
+sort -t: -nrk 2 sort.txt
+    按：分隔     -n按照数值  r降序不写为升序 k指定列 第2列 文件是sort.txt
+
+
+shell运算方式
+expr 1 + 2  直接打印3 必须有空格       *号需要转义
+A=`expr 1 + 2`将运算的结果赋值给A加``  *号需要转义
+
+echo $((10*2)) 这种运算方法*不需要转义  A=$((10*2))
+echo $[10+2]   这种运算方法*不需要转义  A=$[10+2]  这种赋值直接赋 没有命令不加``
+let A=10+20
+
+#!/bin/bash
+echo $0
+脚本作用：执行脚本输出当前脚本名
+
+---------------------------------------------------------参数遍历脚本
+#!/bin/bash
+echo $0
+echo 第一个参数  $1
+echo 第二个参数  $1
+echo 第三个参数  $3
+echo $*
+for i in $*       遍历整个参数表   在执行脚本时直接 给后面输入参数（@和*可以互换）
+do
+  echo 参数： $i
+done
+
+./get.sh 1 2 3 45
+./get.sh
+第一个参数 1
+第二个参数 1
+第三个参数 3
+1 2 3 45
+参数： 1
+参数： 2
+参数： 3
+参数： 45
+
+
+#include<stdio.h>
+int main()
+{
+    return 12;
+}
+执行上面c文件 
+gcc 文件名
+./a.out 编译
+echo $?  打印出返回值
+  
+echo $?  上次调用的返回值
+
+function表示脚本里面定义函数的关键字
+function ABC()
+{
+    echo $1    输出第一个参数
+    echo $2    输出第二个参数
+    return 25
+
+}
+ABC 31 ab   给函数传参
+echo $?
+
+#!/bin/bash
+if [ "$2" = "*" ]           乘号需要转义 强制转义
+then
+   echo `expr $1 "$2" $3`
+else
+   echo `expr $1 $2 $3`
+fi
+
+echo -e "ni \t hao"
+ni       hao         -e  执行转义
+
+2,7s/^/#/g  将2到7行 插入# 注释
+
+#!/bin/bash
+echo `expr $1 "$2" $3`    如果不加双引号  输入\*   不加双引号  会查找所有文件  不能转成\*运算符
+
+通配符用来匹配符合条件的文件名（完全匹配）通配符有*（全部）？（查一个）[](查里面包含的)
+ls find cp 这些命令支持通配符不支持正则表达式
+正则表达式用来在文件中匹配符合条件的字符串（包含匹配）
+grep awk sed支持正则表达式
+
+^表示开头  $表示结尾
+
+grep abc$ file.txt  匹配以abc结尾的行
+grep ^abc file.txt  或者 grep abc< file.txt  匹配以abc开头的行
+grep ^$ file.txt    匹配空白行
+grep -n ^$ file.txt 匹配空白行 加-n  显示行号
+grep "s[ao]i" file.txt  匹配s i之间有a或者有o的行
+grep "[0-9]"  file.txt  匹配有数字0-9任意一个的行  
+[]中括号之间不能加换行符  ^[^0-9]不以数字开头  在[]加表示不以啥
+grep "^[0-9]\{3\}"  file.txt  匹配以开头为数字大于等于3个的行   不加^包含就行
+grep "[0-9]\{1,3\}"  file.txt 匹配数字最少1个最多3个的行
+grep "sa\{1,3\}d"  file.txt    匹配s d之间最少1个a最多3个a的行
+
+sed -n '3p' 5.txt      查看  第三行内容
+sed -n '1,5p' 5.txt    查看  第一行到第五行内容
+sed -n '1p;3p' 5.txt   查看  1、3 不连续用；分开 
+sed -n '/1/p' 5.txt    产看 模糊匹配 只要含1 都匹配出来  p相当于print
+sed '1d' 5.txt         查看  不显示第一行   d相当于delete    以上用-i修改文本
+
+
+sed -n -i '1p' 6.txt   保留文本 第一行内容
+
+
+sed 's/1/nihao/' 5.txt
+sed 's/1/nihao/g' 5.txt  把含1的内容 行首位置的1替换成 你好   加g后全部替换
+
+sed '1inihao' 5.txt  在指定的行（1）之前加nihao  i是插入
+sed '1anihao' 5.txt  在指定的行（1）之后加nihao  i是插入
+
+------------------要用的date.txt文件
+姓名,课程,成绩
+张三,语文,85
+张三,数学,90
+李四,语文,95
+李四,数学,87
+---------------脚本文件
+#!/bin/bash
+awk -F, 'NR>1{
+    sum[$1]+=$3;
+    count[$1]++;
+}END{
+    printf("姓名\t平均成绩\n");
+    for(i in sum)
+    {
+        printf("%s\t%.2f\n",i,sum[i]/count[i]);
+    }
+}' date.txt
+----------------执行完后结果
+姓名    平均成绩
+李四    91.00
+张三    87.50
+-----//------//-----//-----
+A=(1 2 3 4) 定义数组
+echo ${A[2]} 打印下标为2的元素
+3
+echo ${A[*]} 打印全部元素 
+1 2 3 4
+for i in ${A[*]}
+do
+  echo $i
+done
+echo ${#A[@]} 打印元素个数（@,*两者都可以）
+
+printf "%5.2f\n" 1.5972  和c一样
+ 1.60
+
+#!/bin/bash
+echo -n "请输入1-4之间的数字:"
+read A
+case $A in
+   1)
+      echo "输入为1"
+      ;;                 (;;表示break)
+   2)
+      echo "输入为2"
+      ;;
+   3)
+      echo "输入为3"
+      ;;
+   4)
+      echo "输入为4"
+      ;;
+   *)                    *）表示default
+      echo "错误"
+      ;;
+esac                     （结束）
+
+until [ 条件 ]
+do
+
+done
+
+while [ 条件 ]
+do
+
+done
+for（）
+
+
+break 可选参数（给层数） 
+continue 可选参数（给层数）
+
+which g++     
+whereis g++   环境变量的路径中查找目标
+
+文本操作
+gg  跳文本第一行
+G   跳最后一行
+ZZ（大写） 保存退出
+
+Home  行头
+End   行尾
+
+跳行号
+shift+：输入几 回车 就到那一行
+
+gcc g++不指定文件名  自动生成a.out
+
+gcc -o hello 文件名
+用./hello 出现编译结果
+
+source  执行脚本
+
+make（命令） 执行makefile文件
+
+makefile
+target ...   prerequisites...  command...
+主要三部分：目标、依赖、命令
+target -目标文件 
+
+整体可分为：
+显示规则::
+隐晦规则::
+变量定义::
+文件指示::
+
+g++ -c Test.cpp
+编译生成Test.o（相当于.obj文件就是编译文件）
+g++ -c test_for_linux.cpp
+编译生成test_for_linux.o
+
+g++ test_for_linux.o Test.o -o test
+链接生成可执行文件（test也称为二进制文件）
+
+//必须以[Tab]开头，如果和prerequisites在一行，那么可以用分号做为分隔
+
+cc = g++     //指定编译器
+prom = mytest//生成的可执行文件名
+obj = test_for_linux.o Test.o
+
+$prom : $(obj)
+        $(cc) -o $(prom) $(obj)//必须以[Tab]开头
+
+Test.o : Test.cpp stdafx.h Test.h  //系统自带的头文件 不用写依赖比如iostream 自己定义的需要写
+        $(cc) -c Test.cpp //必须以[Tab]开头
+
+test_for_linux.o : test_for_linux.cpp stdafx.h Test.h
+        $(cc) -c test_for_linux.cpp
+
+
+
+%.o : %.cpp $(deps)
+        $(cc) -c $<
+
+clean :
+        rm Test.o test_for_linux.o
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+collect2: error: ld returned 1 exit status
+[root@localhost test_class]# vim stdafx.h
+[root@localhost test_class]# g++ -c Test.cpp
+[root@localhost test_class]# ll
+total 28
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+-rw-r--r--. 1 root root 2952 Dec 23 18:02 Test.o
+[root@localhost test_class]# g++ -c test_for_linux.cpp
+[root@localhost test_class]# ll
+total 32
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root 1904 Dec 23 18:03 test_for_linux.o
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+-rw-r--r--. 1 root root 2952 Dec 23 18:02 Test.o
+[root@localhost test_class]# g++ test_for_linux.o Test.o -o test
+[root@localhost test_class]# ll
+total 44
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:05 test
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root 1904 Dec 23 18:03 test_for_linux.o
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+-rw-r--r--. 1 root root 2952 Dec 23 18:02 Test.o
+[root@localhost test_class]# ./test
+5
+[root@localhost test_class]# ^C
+[root@localhost test_class]# ^C
+[root@localhost test_class]# g++ test_for_linux.o Test.o -o test.exe
+[root@localhost test_class]# ls
+stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# test.exe
+5
+[root@localhost test_class]# test
+[root@localhost test_class]# ^C
+[root@localhost test_class]# ^C
+[root@localhost test_class]# test.exe
+5
+[root@localhost test_class]# test.exe
+5
+[root@localhost test_class]#
+[root@localhost test_class]# test
+[root@localhost test_class]# test.exe
+5
+[root@localhost test_class]# vim calc
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make
+makefile:6: *** missing separator.  Stop.
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make
+makefile:6: *** missing separator.  Stop.
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make
+makefile:6: *** missing separator.  Stop.
+[root@localhost test_class]# makels
+bash: makels: command not found
+[root@localhost test_class]# ls
+calc  makefile  stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# rm -rf calc
+[root@localhost test_class]# ls
+makefile  stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# ls
+makefile  stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make
+make: *** No rule to make target `iostream', needed by `test_for_linux.o'.  Stop.
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make
+g++ -o mytest test_for_linux.o Test.o
+[root@localhost test_class]# ls
+makefile  mytest  stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# ./mytest
+5
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make
+g++ -o mytest1 test_for_linux.o Test.o
+[root@localhost test_class]# ls
+makefile  mytest  mytest1  stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# mytest1
+5
+[root@localhost test_class]# ls -a
+.   makefile  mytest1     stdafx.h     test      test.exe            test_for_linux.o  Test.o
+..  mytest    stdafx.cpp  targetver.h  Test.cpp  test_for_linux.cpp  Test.h
+[root@localhost test_class]# ls -l
+total 84
+-rw-r--r--. 1 root root  294 Dec 23 18:55 makefile
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:43 mytest
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:55 mytest1
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:05 test
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:07 test.exe
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root 1904 Dec 23 18:03 test_for_linux.o
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+-rw-r--r--. 1 root root 2952 Dec 23 18:02 Test.o
+[root@localhost test_class]# ll
+total 84
+-rw-r--r--. 1 root root  294 Dec 23 18:55 makefile
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:43 mytest
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:55 mytest1
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:05 test
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:07 test.exe
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root 1904 Dec 23 18:03 test_for_linux.o
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+-rw-r--r--. 1 root root 2952 Dec 23 18:02 Test.o
+[root@localhost test_class]# mytest1
+5
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]# make clean
+rm Test.o test_for_linux.o
+[root@localhost test_class]# ll
+total 76
+-rw-r--r--. 1 root root  331 Dec 23 18:59 makefile
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:43 mytest
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:55 mytest1
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:05 test
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:07 test.exe
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+[root@localhost test_class]# make
+g++ -c test_for_linux.cpp
+g++ -c Test.cpp
+g++ -o mytest1 test_for_linux.o Test.o
+[root@localhost test_class]# ls
+makefile  mytest  mytest1  stdafx.cpp  stdafx.h  targetver.h  test  Test.cpp  test.exe  test_for_linux.cpp  test_for_linux.o  Test.h  Test.o
+[root@localhost test_class]# ll
+total 84
+-rw-r--r--. 1 root root  331 Dec 23 18:59 makefile
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:43 mytest
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:59 mytest1
+-rw-r--r--. 1 root root  218 Dec 23 17:39 stdafx.cpp
+-rw-r--r--. 1 root root  238 Dec 23 17:56 stdafx.h
+-rw-r--r--. 1 root root  240 Dec 23 17:39 targetver.h
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:05 test
+-rw-r--r--. 1 root root  221 Dec 23 17:39 Test.cpp
+-rwxr-xr-x. 1 root root 9664 Dec 23 18:07 test.exe
+-rw-r--r--. 1 root root  169 Dec 23 17:39 test_for_linux.cpp
+-rw-r--r--. 1 root root 1904 Dec 23 18:59 test_for_linux.o
+-rw-r--r--. 1 root root  119 Dec 23 17:39 Test.h
+-rw-r--r--. 1 root root 2952 Dec 23 18:59 Test.o
+[root@localhost test_class]# make clean
+rm Test.o test_for_linux.o
+[root@localhost test_class]# vim makefile
+[root@localhost test_class]#
+───────────────────────────────────────
